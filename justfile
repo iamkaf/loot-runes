@@ -37,3 +37,6 @@ teakit-check node timeout="180":
 
 teakit-check-all timeout="180":
   @pids=(); for node in $(just list-nodes); do echo "==> $node"; ./gradlew teakitCheck -Pteakit.node="$node" -Pteakit.timeout="{{timeout}}" > "/tmp/lootrunes-$node.teakit.log" 2>&1 & pids+=("$!"); done; status=0; index=0; for node in $(just list-nodes); do if ! wait "${pids[$index]}"; then echo "TeaKit failed: $node"; tail -n 160 "/tmp/lootrunes-$node.teakit.log"; status=1; else echo "TeaKit OK: $node"; fi; index=$((index + 1)); done; exit "$status"
+
+horizontal-jars:
+  @./gradlew validateHorizontalJars --console=plain

@@ -1,0 +1,84 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - node: 26.2-fabric
+            loader: fabric
+          - node: 26.2-forge
+            loader: forge
+          - node: 26.2-neoforge
+            loader: neoforge
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Setup just
+        uses: taiki-e/install-action@just
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build ${{ matrix.node }}
+        run: just build "${{ matrix.node }}"
+
+      - name: Upload loader artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.repository.name }}-${{ matrix.node }}
+          path: ${{ matrix.loader }}/versions/26.2/build/libs/*.jar
+          if-no-files-found: error
+
+  horizontal-jar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Setup just
+        uses: taiki-e/install-action@just
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build and validate merged jar
+        run: just horizontal-jars
+
+      - name: Upload merged jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.repository.name }}-multiloader-26.2
+          path: build/libs/horizontal/26.2/*.jar
+          if-no-files-found: error

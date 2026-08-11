@@ -7,3 +7,10 @@ plugins {
 }
 
 stonecutter active "26.2".let { multiloaderStonecutter.active(it) }
+
+multiloaderArtifacts {
+    horizontalMerge {
+        enabled.set(true)
+        versions.add("26.2")
+    }
+}
