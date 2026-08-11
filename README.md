@@ -1,65 +1,77 @@
-# Extended Golf
+![Loot Runes banner placeholder](docs/banner-placeholder.png)
 
-![Extended Golf banner](https://raw.githubusercontent.com/iamkaf/modresources/refs/heads/main/pages/extendedgolf/banner.png)
+# Loot Runes
 
+[![Modrinth](https://img.shields.io/badge/Modrinth-jVtBevly-1bd96a?style=for-the-badge&logo=modrinth&logoColor=white)](https://modrinth.com/mod/jVtBevly)
+[![Requires Amber](https://img.shields.io/badge/Requires-Amber-ebb134?style=for-the-badge)](https://modrinth.com/mod/amber)
+[![Issues](https://img.shields.io/github/issues/iamkaf/mod-issues?style=for-the-badge&color=eeeeee)](https://github.com/iamkaf/mod-issues)
+[![Discord](https://img.shields.io/discord/1207469438719492176?style=for-the-badge&logo=discord&label=Discord&color=5865F2)](https://discord.gg/HV5WgTksaB)
 
+> Monsters have loot tables. You have editing rights.
 
-[![Amber](https://img.shields.io/badge/Amber-iamkaf?style=for-the-badge&label=Requires&color=%23ebb134)](https://modrinth.com/mod/amber)
-[![Issues](https://img.shields.io/github/issues/iamkaf/mod-issues?style=for-the-badge&color=%23eee)](https://github.com/iamkaf/mod-issues)
-[![Discord](https://img.shields.io/discord/1207469438719492176?style=for-the-badge&logo=discord&label=DISCORD&color=%235865F2)](https://discord.gg/HV5WgTksaB)
-[![KoFi](https://img.shields.io/badge/KoFi-iamkaf?style=for-the-badge&logo=kofi&logoColor=%2330d1e3&label=Support%20Me&color=%2330d1e3)](https://ko-fi.com/iamkaffe)
+**Loot Runes** is a build-making loot mod about unlocking magical rules and choosing how creatures reward you. The destination is simple: open one Rune Tablet, inscribe up to three runes, and turn an ordinary night of combat into a hunt with its own strategy.
 
-Welcome to *Extended Golf*, where you’re the caddy and the Skeleton is your golf club, armed with arrows and aiming for mobs! 🏌️‍♂️💣 Position yourself just right and let the Skeleton do the rest. Get ready for more than just music discs, this mod adds a whole new range of loot from Skeleton-assisted kills! 💎🎁
+The right loadout might double common drops while empowering your prey. Another might consume the clutter and push every kill toward a jackpot. A third might reward weapon variety, strange biomes, or a streak you cannot afford to break.
 
-It’s like Minecraft meets golf... but with mobs, arrows, and lots of loot. Whether you're chasing rare blocks or just vibing with Creepers, *Extended Golf* takes your mob-slaying to the next level! ⛳💥
+Loot stops being a percentage. It becomes a build.
 
+## One tablet. Three runes. A different hunt.
 
-### Features:
-- 🎯 **Every Mob Gets Its Own Loot**: No more generic drops, each mob has its own unique loot pool! From the Warden to Slimes, each kill brings new rewards.  
-- 🛠️ **Customizable Loot**: Want to change the loot? Create your own datapacks to swap out or add new drops. It's all in your hands!  
-- 💥 **Skeleton Assisted Kills**: Get those mobs in perfect range and let your Skeleton friend take a shot, it's all about positioning! ⛳️  
-- 🔄 **More Than Just Music Discs**: This isn’t your average skeleton kill, expect everything from rare materials to fun, quirky items!  
+The Rune Tablet is the center of the planned experience:
 
+1. **Discover** runes by completing unusual feats in the world.
+2. **Inscribe** up to three unlocked runes in a compact, vanilla-style screen.
+3. **Hunt** under the benefits, conditions, and risks you chose.
+4. **Rebuild** your loadout when the next goal demands a different answer.
 
+![Rune Tablet UI placeholder](docs/tablet-ui-placeholder.png)
 
+Three slots are enough to create combinations and few enough to make every exclusion matter. There is no rune currency, no passive skill tree, and no universal best loadout.
 
-### How To Use It
+## The rune language
 
-Position yourself near a mob and wait for the Skeleton to hit it and kill it. Once it does, you'll get loot specific to that mob. You can also customize the loot drops by making your own datapacks if you want to tweak things further.
+The first planned roster establishes six distinct ways to change a hunt:
 
+| Rune | What it asks of you |
+| --- | --- |
+| **Plenty** | Roll natural loot twice, but face tougher creatures. |
+| **Sacrifice** | Consume common drops to improve exceptional-drop odds. |
+| **Echoes** | Carry the last natural drop into the next different creature. |
+| **Ascendance** | Raise danger and reward through an uninterrupted kill streak. |
+| **Migration** | Hunt creatures outside their native biome for alternate rewards. |
+| **Improvisation** | Change finishing weapons instead of repeating the safest answer. |
 
-### Current Plan
+Each rune must change what you hunt, how you fight, or what happens to the spoils. A silent “+10% drops” is not enough.
 
-The development plan is to make the mod more customizable and update it to the latest versions of Minecraft. If you have any requests for features or mod compats let me know.
+![Rune hunt placeholder](docs/rune-hunt-placeholder.png)
 
+## Current development state
 
+The complete rename from **Extended Golf** to **Loot Runes** is finished in this repository. The gameplay rework comes next.
 
-Thank you for the support!
+Current builds still contain the legacy skeleton-assisted loot mechanic inherited from the previous mod. The Rune Tablet, permanent rune unlocks, three-slot loadouts, and the roster above are the target design and are **not implemented yet**.
 
-## Q&A
+That distinction will remain explicit until the new loop is playable.
 
-**Q: Where can I ask something that is not listed here?**
+## Datapacks and compatibility
 
-A: Make an issue [here](https://github.com/iamkaf/mod-issues) or join the [Discord](https://discord.gg/HV5WgTksaB) and shoot me a message.
+The mod ID and resource namespace are now `lootrunes`. Datapacks written for the old namespace must move their files to `data/lootrunes/`.
 
+The existing creature reward tags remain available during the transition, but the future rune data surface is not stable yet. Pack makers should wait for the gameplay release before building deep integrations against the new system.
 
-**Q: Can you port it to [MC version/Mod loader]?**
+Loot Runes is a multiloader project for Fabric and NeoForge and requires [Amber](https://modrinth.com/mod/amber).
 
-A: If enough people request it I'll give it some time, but this really is a 1-man team so it might take a while.
+## Modpacks
 
+You may include Loot Runes in modpacks. No permission request is required.
 
-**Q: Can I include it in my modpack?**
+## Support
 
-A: Yes, no need to give credit or ask.
-
-[![Join our Discord](https://raw.githubusercontent.com/iamkaf/modresources/refs/heads/main/pages/common/discord.png)](https://discord.gg/HV5WgTksaB)
-
-## Compatibility
-
-Let me know if you find any issues.
+Report bugs and compatibility problems through the shared [issue tracker](https://github.com/iamkaf/mod-issues/issues), or join the [Discord](https://discord.gg/HV5WgTksaB) to talk about rune ideas and strange loot builds.
 
 ## Credits
 
-- [Architectury API](https://modrinth.com/mod/architectury-api) for the multiloader setup in which the mod is built upon.
-- And most importantly, **Aris**, for always being there for me.
+- The community members helping shape the new identity.
+- **Aris**, for always being there.
 
+Loot Runes is licensed under the [MIT License](LICENSE).

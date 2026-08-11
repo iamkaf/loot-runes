@@ -1,9 +1,19 @@
-# Template Changelog
+# Changelog
 
-See the full changelog at https://github.com/iamkaf/template-mod/commits/main/
+## Unreleased
+
+### Changed
+
+- Rebranded Extended Golf as Loot Runes.
+- Renamed the mod ID and datapack namespace from `extendedgolf` to `lootrunes`.
+- Moved the source repository to `iamkaf/loot-runes`.
+
+### Notes
+
+- The Rune Tablet and unlockable rune system are still in development. Current builds retain the existing skeleton-assisted loot behavior.
 
 ## 1.0.0
 
-Initial Release
+### Added
 
-##
+- Added creature-specific rewards for skeleton-assisted kills.

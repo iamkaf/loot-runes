@@ -1,6 +1,6 @@
-package com.iamkaf.extendedgolf.neoforge.datagen;
+package com.iamkaf.lootrunes.neoforge.datagen;
 
-import com.iamkaf.extendedgolf.ExtendedGolf;
+import com.iamkaf.lootrunes.LootRunes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 public class ModBlockTagProvider extends BlockTagsProvider {
     public ModBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
             @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, ExtendedGolf.MOD_ID, existingFileHelper);
+        super(output, lookupProvider, LootRunes.MOD_ID, existingFileHelper);
     }
 
     @Override

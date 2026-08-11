@@ -1,6 +1,6 @@
-package com.iamkaf.extendedgolf.registry;
+package com.iamkaf.lootrunes.registry;
 
-import com.iamkaf.extendedgolf.ExtendedGolf;
+import com.iamkaf.lootrunes.LootRunes;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -8,10 +8,10 @@ import net.minecraft.world.item.Item;
 
 public class Items {
     public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ExtendedGolf.MOD_ID, Registries.ITEM);
+            DeferredRegister.create(LootRunes.MOD_ID, Registries.ITEM);
 
     public static RegistrySupplier<Item> EXAMPLE_ITEM = ITEMS.register("example_item",
-            () -> new Item(new Item.Properties().arch$tab(CreativeModeTabs.EXTENDED_GOLF))
+            () -> new Item(new Item.Properties().arch$tab(CreativeModeTabs.LOOT_RUNES))
     );
 
     public static void init() {

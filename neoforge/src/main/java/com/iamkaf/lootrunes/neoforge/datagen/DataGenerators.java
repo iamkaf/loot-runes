@@ -1,6 +1,6 @@
-package com.iamkaf.extendedgolf.neoforge.datagen;
+package com.iamkaf.lootrunes.neoforge.datagen;
 
-import com.iamkaf.extendedgolf.ExtendedGolf;
+import com.iamkaf.lootrunes.LootRunes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -12,7 +12,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = ExtendedGolf.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = LootRunes.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {

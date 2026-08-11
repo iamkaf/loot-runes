@@ -1,4 +1,4 @@
-package com.iamkaf.extendedgolf;
+package com.iamkaf.lootrunes;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -8,7 +8,7 @@ import net.minecraft.world.item.Item;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ExtendedGolfTags {
+public class LootRunesTags {
     public static final Set<String> TAGS = new HashSet<>();
 
     public static final TagKey<Item> silverfish = createItemTag("silverfish");
@@ -99,7 +99,7 @@ public class ExtendedGolfTags {
     public static TagKey<Item> createItemTag(String name) {
         TAGS.add(name);
         return TagKey.create(Registries.ITEM,
-                ResourceLocation.fromNamespaceAndPath(ExtendedGolf.MOD_ID, name)
+                ResourceLocation.fromNamespaceAndPath(LootRunes.MOD_ID, name)
         );
     }
 }

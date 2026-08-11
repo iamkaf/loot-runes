@@ -1,6 +1,6 @@
-package com.iamkaf.extendedgolf.registry;
+package com.iamkaf.lootrunes.registry;
 
-import com.iamkaf.extendedgolf.ExtendedGolf;
+import com.iamkaf.lootrunes.LootRunes;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -11,11 +11,11 @@ import net.minecraft.world.item.ItemStack;
 
 public class CreativeModeTabs {
     private static final DeferredRegister<CreativeModeTab> TABS =
-            DeferredRegister.create(ExtendedGolf.MOD_ID, Registries.CREATIVE_MODE_TAB);
+            DeferredRegister.create(LootRunes.MOD_ID, Registries.CREATIVE_MODE_TAB);
 
-    public static final RegistrySupplier<CreativeModeTab> EXTENDED_GOLF = TABS.register(
-            ExtendedGolf.MOD_ID,
-            () -> CreativeTabRegistry.create(Component.translatable("creativetab." + ExtendedGolf.MOD_ID + "." + ExtendedGolf.MOD_ID),
+    public static final RegistrySupplier<CreativeModeTab> LOOT_RUNES = TABS.register(
+            LootRunes.MOD_ID,
+            () -> CreativeTabRegistry.create(Component.translatable("creativetab." + LootRunes.MOD_ID + "." + LootRunes.MOD_ID),
                     () -> new ItemStack(Items.EXAMPLE_ITEM.get())
             )
     );

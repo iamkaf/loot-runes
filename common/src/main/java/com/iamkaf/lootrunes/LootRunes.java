@@ -1,4 +1,4 @@
-package com.iamkaf.extendedgolf;
+package com.iamkaf.lootrunes;
 
 import com.iamkaf.amber.api.core.AmberMod;
 import com.mojang.logging.LogUtils;
@@ -17,18 +17,18 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyC
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
-public class ExtendedGolf extends AmberMod {
-    public static final String MOD_ID = "extendedgolf";
+public class LootRunes extends AmberMod {
+    public static final String MOD_ID = "lootrunes";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public ExtendedGolf() {
+    public LootRunes() {
         super(MOD_ID);
     }
 
     public static void init() {
-        LOGGER.info("Extended Golf Initializing");
+        LOGGER.info("Loot Runes Initializing");
 
-        LootEvent.MODIFY_LOOT_TABLE.register(ExtendedGolf::modifyLootTables);
+        LootEvent.MODIFY_LOOT_TABLE.register(LootRunes::modifyLootTables);
     }
 
     private static void modifyLootTables(ResourceKey<LootTable> table,
@@ -38,7 +38,7 @@ public class ExtendedGolf extends AmberMod {
         }
 
         if (is(table, "entities/")) {
-            context.addPool(makeLootTable(ExtendedGolfTags.createItemTag(table.location()
+            context.addPool(makeLootTable(LootRunesTags.createItemTag(table.location()
                     .getPath()
                     .replace("entities/", ""))));
         }
