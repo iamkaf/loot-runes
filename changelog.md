@@ -2,15 +2,21 @@
 
 ## Unreleased
 
+### Added
+
+- Added the Rune Tablet and its three-rune loadout screen.
+- Added six unlockable playtest runes that modify natural mob drops.
+- Added per-player rune progress and loadouts that persist with the world.
+- Added Forge support alongside Fabric and NeoForge.
+
 ### Changed
 
 - Rebranded Extended Golf as Loot Runes.
-- Renamed the mod ID and datapack namespace from `extendedgolf` to `lootrunes`.
-- Moved the source repository to `iamkaf/loot-runes`.
+- Ported to Minecraft 26.2.
 
-### Notes
+### Removed
 
-- The Rune Tablet and unlockable rune system are still in development. Current builds retain the existing skeleton-assisted loot behavior.
+- Removed Extended Golf's skeleton-assisted creature rewards.
 
 ## 1.0.0
 

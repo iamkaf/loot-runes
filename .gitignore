@@ -1,42 +1,56 @@
-# gradle
+.DS_Store
+Thumbs.db
 
-.gradle/
-build/
-out/
-classes/
-
-# eclipse
-
-*.launch
-
-# idea
-
+# IDEs
 .idea/
+.vscode/
 *.iml
 *.ipr
 *.iws
+*.bak
+*.log
+*.launch
 
-# vscode
-
-.settings/
-.vscode/
+# Gradle and TeaKit caches
+.gradle/
+.cache/
+.teakit/
+build/
+*/build/
+**/build/
+out/
 bin/
-.classpath
-.project
+tsconfig.json
 
-# macos
-
-*.DS_Store
-
-# fabric
-
+# Minecraft runs
 run/
+runs/
+*/run/
+*/runs/
+**/run/
+**/runs/
 
-# java
+# Stonecutter version sandboxes
+common/versions/
+fabric/versions/
+forge/versions/
+neoforge/versions/
+versions/*/build/
+stonecutter.gradle
 
+# Runtime proof output
+.screens/
+.runclient-*/
+.runclient-check/
+forge/*.launch
+fabric/*.launch
+
+# OS / JVM
 hs_err_*.log
 replay_*.log
 *.hprof
 *.jfr
 
-.architectury-transformer
+# Caches
+**/.cache/
+.architectury-transformer/

@@ -1,12 +1,12 @@
 {
   "required": true,
-  "package": "${mod_group}.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "package": "com.iamkaf.lootrunes.mixin",
+  "refmap": "${mod_id}.refmap.json",
+  "compatibilityLevel": "${mixin_compat_common}",
   "minVersion": "0.8",
-  "client": [
-  ],
-  "mixins": [
-  ],
+  "client": [],
+  "mixins": ["LivingEntityLootMixin"],
+  "server": [],
   "injectors": {
     "defaultRequire": 1
   }

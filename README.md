@@ -2,51 +2,44 @@
 
 # Loot Runes
 
-[![Modrinth](https://img.shields.io/badge/Modrinth-jVtBevly-1bd96a?style=for-the-badge&logo=modrinth&logoColor=white)](https://modrinth.com/mod/jVtBevly)
-[![Requires Amber](https://img.shields.io/badge/Requires-Amber-ebb134?style=for-the-badge)](https://modrinth.com/mod/amber)
-[![Issues](https://img.shields.io/github/issues/iamkaf/mod-issues?style=for-the-badge&color=eeeeee)](https://github.com/iamkaf/mod-issues)
-[![Discord](https://img.shields.io/discord/1207469438719492176?style=for-the-badge&logo=discord&label=Discord&color=5865F2)](https://discord.gg/HV5WgTksaB)
+Loot Runes lets you change mob drops with a Rune Tablet. Carry the tablet while hunting, use it to open the rune menu, and keep up to three unlocked runes active. One rune might add another roll from a mob's normal loot table. Another might reward you for changing weapons or moving to a new biome between kills.
 
-Loot Runes is a work-in-progress mod about changing mob drops with a small loadout. You'll unlock runes as you play, then use a Rune Tablet to keep up to three of them active at once. The combination you pick can change which mobs you hunt, where you fight them, and what you do with their drops.
+This is the first playable version of the idea. The rune effects and unlock requirements are deliberately easy to replace after playtesting.
 
-**The rune system isn't playable yet.** The repository is currently being modernized before feature work begins.
+## The Rune Tablet
 
-## How it will work
-
-Runes are permanent unlocks, not another set of items to keep in a chest. Using the Rune Tablet opens a small Minecraft-style menu where you can choose three unlocked runes. You can come back and change them whenever you want a different setup.
+Craft the tablet with amethyst shards, copper ingots, and stone. Use it from either hand to open its menu.
 
 ![Rune Tablet UI placeholder](docs/tablet-ui-placeholder.png)
 
-The first planned runes are:
+Plenty is available from the start. The rest unlock as the tablet records what you do while carrying it: mobs defeated, kinds of mob hunted, biomes visited, finishing weapons used, and your best kill streak. Progress and your active loadout are saved per player in the world.
 
-- **Plenty** gives mobs another natural loot roll, but makes them harder to fight.
-- **Sacrifice** eats some common drops in exchange for better odds at something unusual.
-- **Echoes** carries the last drop into a kill against a different kind of mob.
-- **Ascendance** builds up danger and rewards while you keep a kill streak alive.
-- **Migration** gives alternate rewards for hunting mobs outside their usual biomes.
-- **Improvisation** rewards you for changing the weapon you use to finish each fight.
+The current rune roster is:
 
-These are planned features. The effects and numbers may change once they're in the game and can actually be tested.
+- **Plenty** adds one extra roll from the mob's own loot table.
+- **Sacrifice** throws away the normal drops and makes two fresh rolls instead.
+- **Echoes** repeats one drop remembered from your previous kill.
+- **Ascendance** adds more rolls as you keep a kill streak going.
+- **Migration** adds a roll when you move to a different biome between kills.
+- **Improvisation** adds a roll when you change finishing weapons between kills.
 
-## What's in the mod right now?
+Runes combine in the order listed above, so a three-rune loadout can behave differently from any one rune on its own. The current numbers are playtest rules, not promises about the final design.
 
-This repo is in the awkward middle of a rewrite. Extended Golf has been renamed to Loot Runes, but its old skeleton-assisted drop mechanic is still the only implemented gameplay. If you're here for the Rune Tablet and loadouts, wait for a later build.
+## Current support
 
-The old creature reward tags are still present for now. Datapacks using them need to move from `data/extendedgolf/` to `data/lootrunes/`. There isn't a public datapack format for runes yet, so pack makers shouldn't build against the planned system.
+The development build targets Minecraft 26.2 on Fabric, Forge, and NeoForge. [Amber](https://modrinth.com/mod/amber) is required.
 
-The current source targets Fabric and NeoForge and requires [Amber](https://modrinth.com/mod/amber). The build setup is also due for modernization before the rune rewrite starts.
+The textures are programmer art on purpose. See the [art guide](docs/art-guide.md) if you want to replace them.
 
-## Modpacks
+## Modpacks and help
 
-You can include Loot Runes in modpacks. You don't need to ask first.
+You can include Loot Runes in modpacks without asking first.
 
-## Help
-
-Found a bug or compatibility problem? Use the shared [issue tracker](https://github.com/iamkaf/mod-issues/issues). You can also join the [Discord](https://discord.gg/HV5WgTksaB) if you want to talk through an idea.
+Found a bug or a bad interaction with another mod? Use the shared [issue tracker](https://github.com/iamkaf/mod-issues/issues). There is also a [Discord](https://discord.gg/HV5WgTksaB) for questions and ideas.
 
 ## Credits
 
-- Everyone who's helped shape the new idea.
+- Everyone who's helped shape the idea.
 - **Aris**, for always being there for me.
 
 Loot Runes is available under the [MIT License](LICENSE).
