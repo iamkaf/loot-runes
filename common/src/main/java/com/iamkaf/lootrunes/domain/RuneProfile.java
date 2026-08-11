@@ -1,11 +1,11 @@
 package com.iamkaf.lootrunes.domain;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.EnumSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /** Mutable server-owned player state. It contains progress, never effect implementation. */
@@ -13,7 +13,7 @@ public final class RuneProfile {
     public static final int MAX_ACTIVE = 3;
     public static final int STREAK_WINDOW_TICKS = 20 * 12;
 
-    private final EnumSet<RuneId> unlocked = EnumSet.of(RuneId.PLENTY);
+    private final EnumSet<RuneId> unlocked = EnumSet.noneOf(RuneId.class);
     private final List<RuneId> active = new ArrayList<>();
     private final Set<String> seenMobs = new LinkedHashSet<>();
     private final Set<String> seenBiomes = new LinkedHashSet<>();
@@ -25,7 +25,15 @@ public final class RuneProfile {
     private String lastMobId = "";
     private String lastBiomeId = "";
     private String lastWeaponId = "";
-    private DropSnapshot rememberedDrop;
+    private Optional<DropSnapshot> rememberedDrop = Optional.empty();
+
+    public RuneProfile() {
+        this(RuneProfileState.initial());
+    }
+
+    public RuneProfile(RuneProfileState state) {
+        restore(state);
+    }
 
     public ActivationResult toggle(RuneId id) {
         Objects.requireNonNull(id, "id");
@@ -44,8 +52,6 @@ public final class RuneProfile {
 
     public KillProgress recordKill(RuneKillFacts facts, List<DropSnapshot> naturalDrops) {
         int nextStreak = nextStreak(facts.gameTick());
-        boolean changedBiome = !lastBiomeId.isBlank() && !lastBiomeId.equals(facts.biomeId());
-        boolean changedWeapon = !lastWeaponId.isBlank() && !lastWeaponId.equals(facts.weaponId());
 
         totalKills++;
         currentStreak = nextStreak;
@@ -57,16 +63,17 @@ public final class RuneProfile {
         seenMobs.add(facts.mobId());
         seenBiomes.add(facts.biomeId());
         seenWeapons.add(facts.weaponId());
-        rememberedDrop = naturalDrops.stream().filter(drop -> !drop.isEmpty()).findFirst().orElse(null);
+        rememberedDrop = naturalDrops.stream().filter(drop -> !drop.isEmpty()).findFirst();
 
+        RuneProfileState state = state();
         EnumSet<RuneId> newlyUnlocked = EnumSet.noneOf(RuneId.class);
         for (RuneDefinition definition : RuneCatalog.all()) {
-            if (!unlocked.contains(definition.id()) && definition.unlockRule().isSatisfied(this)) {
+            if (!unlocked.contains(definition.id()) && definition.unlockRule().isSatisfied(state)) {
                 unlocked.add(definition.id());
                 newlyUnlocked.add(definition.id());
             }
         }
-        return new KillProgress(nextStreak, changedBiome, changedWeapon, Set.copyOf(newlyUnlocked));
+        return new KillProgress(Set.copyOf(newlyUnlocked));
     }
 
     public int nextStreak(long gameTick) {
@@ -76,62 +83,114 @@ public final class RuneProfile {
         return currentStreak + 1;
     }
 
-    public void restore(
-            Collection<RuneId> unlocked,
-            Collection<RuneId> active,
-            int totalKills,
-            int bestStreak,
-            int currentStreak,
-            long lastKillTick,
-            Collection<String> seenMobs,
-            Collection<String> seenBiomes,
-            Collection<String> seenWeapons,
-            String lastMobId,
-            String lastBiomeId,
-            String lastWeaponId,
-            DropSnapshot rememberedDrop
-    ) {
-        this.unlocked.clear();
-        this.unlocked.add(RuneId.PLENTY);
-        this.unlocked.addAll(unlocked);
-        this.active.clear();
-        active.stream().filter(this.unlocked::contains).limit(MAX_ACTIVE).forEach(this.active::add);
-        this.totalKills = Math.max(0, totalKills);
-        this.bestStreak = Math.max(0, bestStreak);
-        this.currentStreak = Math.max(0, currentStreak);
-        this.lastKillTick = lastKillTick;
-        replace(this.seenMobs, seenMobs);
-        replace(this.seenBiomes, seenBiomes);
-        replace(this.seenWeapons, seenWeapons);
-        this.lastMobId = Objects.requireNonNullElse(lastMobId, "");
-        this.lastBiomeId = Objects.requireNonNullElse(lastBiomeId, "");
-        this.lastWeaponId = Objects.requireNonNullElse(lastWeaponId, "");
-        this.rememberedDrop = rememberedDrop == null || rememberedDrop.isEmpty() ? null : rememberedDrop;
+    public RuneProfileState state() {
+        return new RuneProfileState(
+                unlocked,
+                active,
+                totalKills,
+                new RuneProfileState.Streak(bestStreak, currentStreak),
+                new RuneProfileState.LastKill(lastKillTick, lastMobId, lastBiomeId, lastWeaponId),
+                seenMobs,
+                seenBiomes,
+                seenWeapons,
+                rememberedDrop
+        );
     }
 
-    private static void replace(Set<String> target, Collection<String> source) {
+    private void restore(RuneProfileState state) {
+        Objects.requireNonNull(state, "state");
+        this.unlocked.clear();
+        this.unlocked.addAll(state.unlocked());
+        this.active.clear();
+        this.active.addAll(state.active());
+        this.totalKills = state.totalKills();
+        this.bestStreak = state.streak().best();
+        this.currentStreak = state.streak().current();
+        this.lastKillTick = state.lastKill().gameTick();
+        replace(this.seenMobs, state.seenMobs());
+        replace(this.seenBiomes, state.seenBiomes());
+        replace(this.seenWeapons, state.seenWeapons());
+        this.lastMobId = state.lastKill().mobId();
+        this.lastBiomeId = state.lastKill().biomeId();
+        this.lastWeaponId = state.lastKill().weaponId();
+        this.rememberedDrop = state.rememberedDrop();
+    }
+
+    private static void replace(Set<String> target, Set<String> source) {
         target.clear();
         source.stream().filter(Objects::nonNull).filter(value -> !value.isBlank()).forEach(target::add);
     }
 
-    public Set<RuneId> unlocked() { return Set.copyOf(unlocked); }
-    public List<RuneId> active() { return List.copyOf(active); }
-    public boolean isUnlocked(RuneId id) { return unlocked.contains(id); }
-    public boolean isActive(RuneId id) { return active.contains(id); }
-    public int totalKills() { return totalKills; }
-    public int bestStreak() { return bestStreak; }
-    public int currentStreak() { return currentStreak; }
-    public long lastKillTick() { return lastKillTick; }
-    public Set<String> seenMobs() { return Set.copyOf(seenMobs); }
-    public Set<String> seenBiomes() { return Set.copyOf(seenBiomes); }
-    public Set<String> seenWeapons() { return Set.copyOf(seenWeapons); }
-    public String lastMobId() { return lastMobId; }
-    public String lastBiomeId() { return lastBiomeId; }
-    public String lastWeaponId() { return lastWeaponId; }
-    public DropSnapshot rememberedDrop() { return rememberedDrop; }
+    public Set<RuneId> unlocked() {
+        return Set.copyOf(unlocked);
+    }
 
-    public enum ActivationResult { ACTIVATED, DEACTIVATED, LOCKED, FULL }
+    public List<RuneId> active() {
+        return List.copyOf(active);
+    }
 
-    public record KillProgress(int streak, boolean changedBiome, boolean changedWeapon, Set<RuneId> newlyUnlocked) {
+    public boolean isUnlocked(RuneId id) {
+        return unlocked.contains(id);
+    }
+
+    public boolean isActive(RuneId id) {
+        return active.contains(id);
+    }
+
+    public int totalKills() {
+        return totalKills;
+    }
+
+    public int bestStreak() {
+        return bestStreak;
+    }
+
+    public int currentStreak() {
+        return currentStreak;
+    }
+
+    public long lastKillTick() {
+        return lastKillTick;
+    }
+
+    public Set<String> seenMobs() {
+        return Set.copyOf(seenMobs);
+    }
+
+    public Set<String> seenBiomes() {
+        return Set.copyOf(seenBiomes);
+    }
+
+    public Set<String> seenWeapons() {
+        return Set.copyOf(seenWeapons);
+    }
+
+    public String lastMobId() {
+        return lastMobId;
+    }
+
+    public String lastBiomeId() {
+        return lastBiomeId;
+    }
+
+    public String lastWeaponId() {
+        return lastWeaponId;
+    }
+
+    public Optional<DropSnapshot> rememberedDrop() {
+        return rememberedDrop;
+    }
+
+    public enum ActivationResult {
+        ACTIVATED,
+        DEACTIVATED,
+        LOCKED,
+        FULL
+    }
+
+    public record KillProgress(Set<RuneId> newlyUnlocked) {
+        public KillProgress {
+            newlyUnlocked = Set.copyOf(newlyUnlocked);
+        }
     }
 }

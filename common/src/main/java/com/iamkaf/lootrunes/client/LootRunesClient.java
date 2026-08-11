@@ -8,6 +8,19 @@ public final class LootRunesClient {
     }
 
     public static void openOrUpdate(RuneTabletSnapshot snapshot) {
-        Minecraft.getInstance().setScreenAndShow(new RuneTabletScreen(snapshot));
+        Minecraft minecraft = Minecraft.getInstance();
+        //? if >=26.2 {
+        if (minecraft.gui.screen() instanceof RuneTabletScreen screen) {
+            screen.update(snapshot);
+            return;
+        }
+        minecraft.setScreenAndShow(new RuneTabletScreen(snapshot));
+        //?} else {
+        /*if (minecraft.screen instanceof RuneTabletScreen screen) {
+            screen.update(snapshot);
+            return;
+        }
+        minecraft.setScreen(new RuneTabletScreen(snapshot));*/
+        //?}
     }
 }

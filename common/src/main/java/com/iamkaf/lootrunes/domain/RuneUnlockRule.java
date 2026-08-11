@@ -2,11 +2,11 @@ package com.iamkaf.lootrunes.domain;
 
 /** A replaceable prototype unlock rule. */
 public interface RuneUnlockRule {
-    int progress(RuneProfile profile);
+    int progress(RuneProfileState profile);
 
     int target();
 
-    default boolean isSatisfied(RuneProfile profile) {
+    default boolean isSatisfied(RuneProfileState profile) {
         return progress(profile) >= target();
     }
 }

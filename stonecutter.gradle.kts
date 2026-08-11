@@ -11,6 +11,7 @@ stonecutter active "26.2".let { multiloaderStonecutter.active(it) }
 multiloaderArtifacts {
     horizontalMerge {
         enabled.set(true)
-        versions.add("26.2")
+        versions.addAll("1.21.11", "26.1", "26.1.1", "26.1.2", "26.2")
+        acknowledgeUnsafeVersion("1.21.11")
     }
 }

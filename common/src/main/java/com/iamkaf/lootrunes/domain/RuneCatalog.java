@@ -1,6 +1,9 @@
 package com.iamkaf.lootrunes.domain;
 
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.ToIntFunction;
 
 /**
  * The first playtest roster. Keep definitions here so unlock thresholds and effects can be replaced
@@ -27,6 +30,7 @@ public final class RuneCatalog {
                 }
             })
     );
+    private static final Map<RuneId, RuneDefinition> BY_ID = byId(RUNES);
 
     private RuneCatalog() {
     }
@@ -36,7 +40,11 @@ public final class RuneCatalog {
     }
 
     public static RuneDefinition get(RuneId id) {
-        return RUNES.stream().filter(definition -> definition.id() == id).findFirst().orElseThrow();
+        RuneDefinition definition = BY_ID.get(id);
+        if (definition == null) {
+            throw new IllegalArgumentException("Unknown rune: " + id);
+        }
+        return definition;
     }
 
     private static RuneDefinition definition(RuneId id, RuneUnlockRule unlock, RuneDropRule rule) {
@@ -44,17 +52,51 @@ public final class RuneCatalog {
         return new RuneDefinition(id, prefix, prefix + ".description", prefix + ".unlock", unlock, rule);
     }
 
-    private static RuneUnlockRule always() { return metric(1, profile -> 1); }
-    private static RuneUnlockRule kills(int target) { return metric(target, RuneProfile::totalKills); }
-    private static RuneUnlockRule distinctMobs(int target) { return metric(target, profile -> profile.seenMobs().size()); }
-    private static RuneUnlockRule distinctBiomes(int target) { return metric(target, profile -> profile.seenBiomes().size()); }
-    private static RuneUnlockRule distinctWeapons(int target) { return metric(target, profile -> profile.seenWeapons().size()); }
-    private static RuneUnlockRule bestStreak(int target) { return metric(target, RuneProfile::bestStreak); }
+    private static RuneUnlockRule always() {
+        return metric(1, profile -> 1);
+    }
 
-    private static RuneUnlockRule metric(int target, java.util.function.ToIntFunction<RuneProfile> progress) {
+    private static RuneUnlockRule kills(int target) {
+        return metric(target, RuneProfileState::totalKills);
+    }
+
+    private static RuneUnlockRule distinctMobs(int target) {
+        return metric(target, profile -> profile.seenMobs().size());
+    }
+
+    private static RuneUnlockRule distinctBiomes(int target) {
+        return metric(target, profile -> profile.seenBiomes().size());
+    }
+
+    private static RuneUnlockRule distinctWeapons(int target) {
+        return metric(target, profile -> profile.seenWeapons().size());
+    }
+
+    private static RuneUnlockRule bestStreak(int target) {
+        return metric(target, profile -> profile.streak().best());
+    }
+
+    private static RuneUnlockRule metric(int target, ToIntFunction<RuneProfileState> progress) {
         return new RuneUnlockRule() {
-            @Override public int progress(RuneProfile profile) { return Math.min(target, progress.applyAsInt(profile)); }
-            @Override public int target() { return target; }
+            @Override
+            public int progress(RuneProfileState profile) {
+                return Math.min(target, progress.applyAsInt(profile));
+            }
+
+            @Override
+            public int target() {
+                return target;
+            }
         };
+    }
+
+    private static Map<RuneId, RuneDefinition> byId(List<RuneDefinition> definitions) {
+        EnumMap<RuneId, RuneDefinition> result = new EnumMap<>(RuneId.class);
+        for (RuneDefinition definition : definitions) {
+            if (result.put(definition.id(), definition) != null) {
+                throw new IllegalStateException("Duplicate rune definition: " + definition.id());
+            }
+        }
+        return Map.copyOf(result);
     }
 }

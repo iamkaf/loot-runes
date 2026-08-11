@@ -1,13 +1,19 @@
 package com.iamkaf.lootrunes.fabric.datagen;
 
+//? if >=26.1
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+//? if <26.1
+/*import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;*/
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.core.HolderLookup;
 
 import java.util.concurrent.CompletableFuture;
 
 public final class LootRunesLanguageProvider extends FabricLanguageProvider {
+    //? if >=26.1
     public LootRunesLanguageProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
+    //? if <26.1
+    /*public LootRunesLanguageProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> lookup) {*/
         super(output, lookup);
     }
 

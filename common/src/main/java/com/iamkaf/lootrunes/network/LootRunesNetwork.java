@@ -17,6 +17,12 @@ public final class LootRunesNetwork {
             return;
         }
         CHANNEL.register(
+                C2SOpenRuneTabletPacket.class,
+                C2SOpenRuneTabletPacket.ENCODER,
+                C2SOpenRuneTabletPacket.DECODER,
+                C2SOpenRuneTabletPacket.HANDLER
+        );
+        CHANNEL.register(
                 C2SToggleRunePacket.class,
                 C2SToggleRunePacket.ENCODER,
                 C2SToggleRunePacket.DECODER,

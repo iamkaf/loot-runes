@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "C": "minecraft:copper_ingot",
+    "S": "minecraft:stone"
+  },
+  "pattern": [
+    "ACA",
+    "CSC",
+    "ACA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lootrunes:rune_tablet"
+  }
+}

@@ -22,10 +22,7 @@ public final class RuneTabletService {
             return;
         }
         RuneProfileData data = RuneProfileData.get(player.level().getServer());
-        RuneProfile.ActivationResult result = data.profile(player.getUUID()).toggle(runeId);
-        if (result == RuneProfile.ActivationResult.ACTIVATED || result == RuneProfile.ActivationResult.DEACTIVATED) {
-            data.changed();
-        }
+        data.toggle(player.getUUID(), runeId);
         send(player);
     }
 

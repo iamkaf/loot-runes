@@ -1,5 +1,6 @@
 package com.iamkaf.lootrunes.domain;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /** Combined, deterministic instructions produced by the active rune pipeline. */
@@ -32,6 +33,11 @@ public record RunePlan(boolean keepNaturalDrops, int bonusRolls, Optional<DropSn
             if (drop != null && !drop.isEmpty()) {
                 echoedDrop = drop;
             }
+            return this;
+        }
+
+        public Builder echo(Optional<DropSnapshot> drop) {
+            Objects.requireNonNull(drop, "drop").ifPresent(this::echo);
             return this;
         }
 

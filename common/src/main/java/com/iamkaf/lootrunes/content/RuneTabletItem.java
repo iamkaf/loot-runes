@@ -1,6 +1,7 @@
 package com.iamkaf.lootrunes.content;
 
-import com.iamkaf.lootrunes.runtime.RuneTabletService;
+import com.iamkaf.lootrunes.network.C2SOpenRuneTabletPacket;
+import com.iamkaf.lootrunes.network.LootRunesNetwork;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -16,10 +17,11 @@ public final class RuneTabletItem extends Item {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        if (player instanceof ServerPlayer serverPlayer) {
-            RuneTabletService.open(serverPlayer);
+        if (level.isClientSide()) {
+            LootRunesNetwork.sendToServer(new C2SOpenRuneTabletPacket());
+        } else if (player instanceof ServerPlayer) {
+            player.awardStat(Stats.ITEM_USED.get(this));
         }
-        player.awardStat(Stats.ITEM_USED.get(this));
         return InteractionResult.SUCCESS;
     }
 }

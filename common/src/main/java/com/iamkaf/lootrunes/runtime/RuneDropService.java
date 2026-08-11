@@ -56,8 +56,7 @@ public final class RuneDropService {
         }
         plan.echoedDrop().flatMap(RuneDropService::toItemStack).ifPresent(result::add);
 
-        RuneProfile.KillProgress progress = profile.recordKill(facts, snapshots);
-        data.changed();
+        RuneProfile.KillProgress progress = data.recordKill(player.getUUID(), facts, snapshots);
         for (RuneId unlocked : progress.newlyUnlocked()) {
             player.sendSystemMessage(
                     Component.translatable("message.lootrunes.unlocked", Component.translatable(RuneCatalog.get(unlocked).nameKey())),

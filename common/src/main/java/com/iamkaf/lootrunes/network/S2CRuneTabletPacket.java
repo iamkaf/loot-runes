@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record S2CRuneTabletPacket(RuneTabletSnapshot snapshot) implements Packet<S2CRuneTabletPacket> {
+    private static final int MAX_RUNE_ENTRIES = RuneId.values().length;
+
     public static final PacketEncoder<S2CRuneTabletPacket> ENCODER = (packet, buffer) -> {
         buffer.writeVarInt(packet.snapshot.activeCount());
         buffer.writeVarInt(packet.snapshot.activeLimit());
@@ -28,6 +30,9 @@ public record S2CRuneTabletPacket(RuneTabletSnapshot snapshot) implements Packet
         int activeCount = buffer.readVarInt();
         int activeLimit = buffer.readVarInt();
         int count = buffer.readVarInt();
+        if (count < 0 || count > MAX_RUNE_ENTRIES) {
+            throw new IllegalArgumentException("Invalid rune tablet entry count: " + count);
+        }
         List<RuneTabletSnapshot.Entry> entries = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
             entries.add(new RuneTabletSnapshot.Entry(

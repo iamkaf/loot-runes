@@ -1,15 +1,17 @@
 import { Capability, Readiness, describe, expect, pos, test } from "@teakit/test";
-import type { TeaKitTestContext } from "@teakit/test";
+import type { ClientScreen, TeaKitTestContext } from "@teakit/test";
 
 const arena = pos(4.5, 70, 0.5);
+const runeTabletScreen = "com.iamkaf.lootrunes.client.RuneTabletScreen";
 
 describe.configure({
   timeout: "6m",
   readiness: [Readiness.World, Readiness.Player],
   capabilities: [
+    Capability.ClientInput,
     Capability.ClientScreens,
     Capability.ClientScreenshot,
-    Capability.PlayerUseItem,
+    Capability.PlayerInventory,
     Capability.RuntimeTiming,
     Capability.ServerCommands,
     Capability.WorldEntities,
@@ -42,18 +44,23 @@ describe("Loot Runes", () => {
         "/item replace entity @s weapon.mainhand with lootrunes:rune_tablet",
       ]);
 
-      await ctx.player.useItem({ hand: "main_hand" });
-      let screen = await ctx.client.waitForScreen("com.iamkaf.lootrunes.client.RuneTabletScreen", { timeout: "5s" });
+      await ctx.player.inventory().waitForItem("lootrunes:rune_tablet", {
+        selected: true,
+        timeout: "10s",
+      });
+      await ctx.player.holdUse(true);
+      await ctx.player.holdUse(false);
+      let screen = await waitForRuneTablet(ctx);
       const plenty = screen.widgets().all().find((widget) => widget.label.startsWith("Plenty"));
       expect(plenty).toBeDefined();
       if (plenty?.label.endsWith(" *")) {
         screen = await screen.widgets().activate("Plenty *");
         await ctx.runtime.wait(500);
-        screen = await ctx.client.waitForScreen("com.iamkaf.lootrunes.client.RuneTabletScreen", { timeout: "5s" });
+        screen = await ctx.client.waitForScreen(runeTabletScreen, { timeout: "15s" });
       }
       screen = await screen.widgets().activate("Plenty");
       await ctx.runtime.wait(500);
-      screen = await ctx.client.waitForScreen("com.iamkaf.lootrunes.client.RuneTabletScreen", { timeout: "5s" });
+      screen = await ctx.client.waitForScreen(runeTabletScreen, { timeout: "15s" });
       expect(screen.widgets().all().some((widget) => widget.label === "Plenty *")).toBe(true);
       await ctx.client.screenshot("loot-runes-tablet-plenty-active", {
         hideOverlay: true,
@@ -68,7 +75,7 @@ describe("Loot Runes", () => {
       ]);
 
       const drops = ctx.loot.near(arena, { item: "minecraft:chicken", radius: 6 });
-      await drops.waitForCountAtLeast(1, { timeout: "5s" });
+      await drops.waitForCountAtLeast(1, { timeout: "15s" });
       const rawChicken = (await drops.list()).reduce((count, drop) => count + (drop.count ?? 0), 0);
       expect(rawChicken).toBeGreaterThanOrEqual(2);
     } finally {
@@ -76,6 +83,18 @@ describe("Loot Runes", () => {
     }
   });
 });
+
+async function waitForRuneTablet(ctx: TeaKitTestContext): Promise<ClientScreen> {
+  const deadline = Date.now() + 15_000;
+  while (Date.now() < deadline) {
+    const screen = await ctx.client.screen();
+    if (screen.screenClass === runeTabletScreen) {
+      return screen;
+    }
+    await ctx.runtime.wait(250);
+  }
+  throw new Error(`Timed out waiting for ${runeTabletScreen}`);
+}
 
 async function cleanup(ctx: TeaKitTestContext) {
   await ctx.client.closeMenus();

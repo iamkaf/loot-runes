@@ -27,7 +27,7 @@ Runes combine in the order listed above, so a three-rune loadout can behave diff
 
 ## Current support
 
-The development build targets Minecraft 26.2 on Fabric, Forge, and NeoForge. [Amber](https://modrinth.com/mod/amber) is required.
+Development builds target Minecraft 1.21.11, 26.1, 26.1.1, 26.1.2, and 26.2 on Fabric, Forge, and NeoForge. Each Minecraft version also gets one merged jar that can run on any of the three loaders. Merged jars for 1.21.11 are experimental while the shared tooling for that version settles. [Amber](https://modrinth.com/mod/amber) is required.
 
 The textures are programmer art on purpose. See the [art guide](docs/art-guide.md) if you want to replace them.
 

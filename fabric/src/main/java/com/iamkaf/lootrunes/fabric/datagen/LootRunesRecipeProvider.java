@@ -2,7 +2,10 @@ package com.iamkaf.lootrunes.fabric.datagen;
 
 import com.iamkaf.lootrunes.Constants;
 import com.iamkaf.lootrunes.registry.LootRunesItems;
+//? if >=26.1
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+//? if <26.1
+/*import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;*/
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -35,7 +38,10 @@ public final class LootRunesRecipeProvider extends RecipeProvider {
     }
 
     public static final class Runner extends FabricRecipeProvider {
+        //? if >=26.1
         public Runner(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
+        //? if <26.1
+        /*public Runner(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> lookup) {*/
             super(output, lookup);
         }
 

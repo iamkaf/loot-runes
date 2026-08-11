@@ -2,7 +2,10 @@ package com.iamkaf.lootrunes.domain;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -53,19 +56,7 @@ class RunePipelineTest {
 
     @Test
     void ascendanceScalesWithTheUpcomingStreakAndCapsAtThreeRolls() {
-        RuneProfile profile = unlockedWith(RuneId.ASCENDANCE);
-        profile.restore(
-                List.of(RuneId.values()),
-                List.of(RuneId.ASCENDANCE),
-                10,
-                8,
-                8,
-                100,
-                List.of("a", "b", "c"),
-                List.of("a", "b", "c"),
-                List.of("a", "b", "c"),
-                "a", "a", "a", null
-        );
+        RuneProfile profile = profile(List.of(RuneId.ASCENDANCE), new RuneProfileState.Streak(8, 8), 100);
 
         assertEquals(3, pipeline.evaluate(profile, kill(120, "plains", "sword"), List.of()).bonusRolls());
         assertEquals(0, pipeline.evaluate(profile, kill(100 + RuneProfile.STREAK_WINDOW_TICKS + 1L, "plains", "sword"), List.of()).bonusRolls());
@@ -76,19 +67,47 @@ class RunePipelineTest {
     }
 
     private static RuneProfile unlockedWith(RuneId... active) {
-        RuneProfile profile = new RuneProfile();
-        profile.restore(
-                List.of(RuneId.values()),
-                List.of(active),
+        return profile(List.of(active), new RuneProfileState.Streak(5, 0), Long.MIN_VALUE);
+    }
+
+    private static RuneProfile profile(List<RuneId> active, RuneProfileState.Streak streak, long lastKillTick) {
+        return new RuneProfile(new RuneProfileState(
+                Set.copyOf(Arrays.asList(RuneId.values())),
+                active,
                 10,
-                5,
-                0,
-                Long.MIN_VALUE,
-                List.of("a", "b", "c"),
-                List.of("a", "b", "c"),
-                List.of("a", "b", "c"),
-                "", "", "", null
+                streak,
+                new RuneProfileState.LastKill(lastKillTick, "a", "a", "a"),
+                Set.of("a", "b", "c"),
+                Set.of("a", "b", "c"),
+                Set.of("a", "b", "c"),
+                Optional.empty()
+        ));
+    }
+
+    @Test
+    void pipelineCanUseAPlaytestSpecificRoster() {
+        RuneDefinition replacement = new RuneDefinition(
+                RuneId.PLENTY,
+                "test.name",
+                "test.description",
+                "test.unlock",
+                new RuneUnlockRule() {
+                    @Override
+                    public int progress(RuneProfileState profile) {
+                        return 1;
+                    }
+
+                    @Override
+                    public int target() {
+                        return 1;
+                    }
+                },
+                (evaluation, plan) -> plan.addBonusRolls(4)
         );
-        return profile;
+        RuneProfile profile = unlockedWith(RuneId.PLENTY);
+
+        RunePlan plan = new RunePipeline(List.of(replacement)).evaluate(profile, kill(20, "plains", "sword"), List.of());
+
+        assertEquals(4, plan.bonusRolls());
     }
 }

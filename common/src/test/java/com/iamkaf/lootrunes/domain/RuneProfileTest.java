@@ -2,7 +2,10 @@ package com.iamkaf.lootrunes.domain;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -57,20 +60,52 @@ class RuneProfileTest {
         assertEquals(1, profile.nextStreak(20 + RuneProfile.STREAK_WINDOW_TICKS + 1));
     }
 
+    @Test
+    void stateRoundTripPreservesProgressAndActivationOrder() {
+        RuneProfile original = fullyUnlockedProfile();
+        original.toggle(RuneId.ECHOES);
+        original.toggle(RuneId.PLENTY);
+        original.recordKill(
+                new RuneKillFacts("minecraft:zombie", "minecraft:plains", "minecraft:sword", 120),
+                List.of(new DropSnapshot("minecraft:rotten_flesh", 2))
+        );
+
+        RuneProfile restored = new RuneProfile(original.state());
+
+        assertEquals(original.state(), restored.state());
+        assertEquals(List.of(RuneId.ECHOES, RuneId.PLENTY), restored.active());
+    }
+
+    @Test
+    void restoredStateRejectsLockedAndExcessActiveRunes() {
+        RuneProfile profile = new RuneProfile(new RuneProfileState(
+                Set.of(RuneId.PLENTY, RuneId.ECHOES, RuneId.MIGRATION),
+                List.of(RuneId.PLENTY, RuneId.SACRIFICE, RuneId.ECHOES, RuneId.MIGRATION),
+                -4,
+                new RuneProfileState.Streak(-2, -1),
+                RuneProfileState.LastKill.NONE,
+                Set.of(),
+                Set.of(),
+                Set.of(),
+                Optional.empty()
+        ));
+
+        assertEquals(List.of(RuneId.PLENTY, RuneId.ECHOES, RuneId.MIGRATION), profile.active());
+        assertEquals(0, profile.totalKills());
+        assertEquals(0, profile.currentStreak());
+    }
+
     private static RuneProfile fullyUnlockedProfile() {
-        RuneProfile profile = new RuneProfile();
-        profile.restore(
-                List.of(RuneId.values()),
+        return new RuneProfile(new RuneProfileState(
+                Set.copyOf(Arrays.asList(RuneId.values())),
                 List.of(),
                 10,
-                5,
-                5,
-                100,
-                List.of("a", "b", "c"),
-                List.of("a", "b", "c"),
-                List.of("a", "b", "c"),
-                "a", "a", "a", null
-        );
-        return profile;
+                new RuneProfileState.Streak(5, 5),
+                new RuneProfileState.LastKill(100, "a", "a", "a"),
+                Set.of("a", "b", "c"),
+                Set.of("a", "b", "c"),
+                Set.of("a", "b", "c"),
+                Optional.empty()
+        ));
     }
 }

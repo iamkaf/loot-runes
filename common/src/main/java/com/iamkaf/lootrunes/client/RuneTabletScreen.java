@@ -7,7 +7,11 @@ import com.iamkaf.lootrunes.domain.RuneId;
 import com.iamkaf.lootrunes.network.C2SToggleRunePacket;
 import com.iamkaf.lootrunes.network.LootRunesNetwork;
 import com.iamkaf.lootrunes.runtime.RuneTabletSnapshot;
+//? if >=26.1 {
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+//?} else {
+/*import net.minecraft.client.gui.GuiGraphics;*/
+//?}
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
@@ -25,11 +29,16 @@ public final class RuneTabletScreen extends Screen {
     private static final int IMAGE_HEIGHT = 166;
     private static final Identifier BACKGROUND = Constants.resource("textures/gui/rune_tablet.png");
 
-    private final RuneTabletSnapshot snapshot;
+    private RuneTabletSnapshot snapshot;
 
     public RuneTabletScreen(RuneTabletSnapshot snapshot) {
         super(Component.translatable("screen.lootrunes.rune_tablet"));
         this.snapshot = snapshot;
+    }
+
+    public void update(RuneTabletSnapshot snapshot) {
+        this.snapshot = snapshot;
+        rebuildWidgets();
     }
 
     @Override
@@ -69,6 +78,7 @@ public final class RuneTabletScreen extends Screen {
         return true;
     }
 
+    //? if >=26.1 {
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
         super.extractBackground(graphics, mouseX, mouseY, partialTick);
@@ -80,6 +90,10 @@ public final class RuneTabletScreen extends Screen {
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
         super.extractRenderState(graphics, mouseX, mouseY, partialTick);
+        drawContent(graphics);
+    }
+
+    private void drawContent(GuiGraphicsExtractor graphics) {
         int left = (width - IMAGE_WIDTH) / 2;
         int top = (height - IMAGE_HEIGHT) / 2;
         graphics.text(font, title, left + 8, top + 6, 0x404040, false);
@@ -108,6 +122,47 @@ public final class RuneTabletScreen extends Screen {
             drawRuneIcon(graphics, entry.unlocked() ? entry.id() : null, x, y);
         }
     }
+    //?} else {
+    /*@Override
+    public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        super.renderBackground(graphics, mouseX, mouseY, partialTick);
+        int left = (width - IMAGE_WIDTH) / 2;
+        int top = (height - IMAGE_HEIGHT) / 2;
+        graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, left, top, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_HEIGHT);
+    }
+
+    @Override
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        super.render(graphics, mouseX, mouseY, partialTick);
+        int left = (width - IMAGE_WIDTH) / 2;
+        int top = (height - IMAGE_HEIGHT) / 2;
+        graphics.drawString(font, title, left + 8, top + 6, 0x404040, false);
+        graphics.drawString(
+                font,
+                Component.translatable("screen.lootrunes.active", snapshot.activeCount(), snapshot.activeLimit()),
+                left + 8,
+                top + 18,
+                0x404040,
+                false
+        );
+
+        List<RuneTabletSnapshot.Entry> active = snapshot.runes().stream().filter(RuneTabletSnapshot.Entry::active).toList();
+        for (int slotIndex = 0; slotIndex < snapshot.activeLimit(); slotIndex++) {
+            int x = left + 58 + slotIndex * 20;
+            int y = top + 29;
+            if (slotIndex < active.size()) {
+                drawRuneIcon(graphics, active.get(slotIndex).id(), x + 1, y + 1);
+            }
+        }
+
+        for (int index = 0; index < snapshot.runes().size(); index++) {
+            RuneTabletSnapshot.Entry entry = snapshot.runes().get(index);
+            int x = left + 10 + (index % 2) * 81;
+            int y = top + 59 + (index / 2) * 23;
+            drawRuneIcon(graphics, entry.unlocked() ? entry.id() : null, x, y);
+        }
+    }*/
+    //?}
 
     private static Component tooltip(RuneTabletSnapshot.Entry entry, RuneDefinition definition) {
         List<Component> lines = new ArrayList<>();
@@ -129,7 +184,10 @@ public final class RuneTabletScreen extends Screen {
         return tooltip;
     }
 
+    //? if >=26.1
     private static void drawRuneIcon(GuiGraphicsExtractor graphics, RuneId id, int x, int y) {
+    //? if <26.1
+    /*private static void drawRuneIcon(GuiGraphics graphics, RuneId id, int x, int y) {*/
         String path = id == null ? "locked" : id.value();
         graphics.blit(
                 RenderPipelines.GUI_TEXTURED,
@@ -144,5 +202,4 @@ public final class RuneTabletScreen extends Screen {
                 16
         );
     }
-
 }
