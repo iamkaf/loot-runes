@@ -7,71 +7,46 @@
 [![Issues](https://img.shields.io/github/issues/iamkaf/mod-issues?style=for-the-badge&color=eeeeee)](https://github.com/iamkaf/mod-issues)
 [![Discord](https://img.shields.io/discord/1207469438719492176?style=for-the-badge&logo=discord&label=Discord&color=5865F2)](https://discord.gg/HV5WgTksaB)
 
-> Monsters have loot tables. You have editing rights.
+Loot Runes is a work-in-progress mod about changing mob drops with a small loadout. You'll unlock runes as you play, then use a Rune Tablet to keep up to three of them active at once. The combination you pick can change which mobs you hunt, where you fight them, and what you do with their drops.
 
-**Loot Runes** is a build-making loot mod about unlocking magical rules and choosing how creatures reward you. The destination is simple: open one Rune Tablet, inscribe up to three runes, and turn an ordinary night of combat into a hunt with its own strategy.
+**The rune system isn't playable yet.** The repository is currently being modernized before feature work begins.
 
-The right loadout might double common drops while empowering your prey. Another might consume the clutter and push every kill toward a jackpot. A third might reward weapon variety, strange biomes, or a streak you cannot afford to break.
+## How it will work
 
-Loot stops being a percentage. It becomes a build.
-
-## One tablet. Three runes. A different hunt.
-
-The Rune Tablet is the center of the planned experience:
-
-1. **Discover** runes by completing unusual feats in the world.
-2. **Inscribe** up to three unlocked runes in a compact, vanilla-style screen.
-3. **Hunt** under the benefits, conditions, and risks you chose.
-4. **Rebuild** your loadout when the next goal demands a different answer.
+Runes are permanent unlocks, not another set of items to keep in a chest. Using the Rune Tablet opens a small Minecraft-style menu where you can choose three unlocked runes. You can come back and change them whenever you want a different setup.
 
 ![Rune Tablet UI placeholder](docs/tablet-ui-placeholder.png)
 
-Three slots are enough to create combinations and few enough to make every exclusion matter. There is no rune currency, no passive skill tree, and no universal best loadout.
+The first planned runes are:
 
-## The rune language
+- **Plenty** gives mobs another natural loot roll, but makes them harder to fight.
+- **Sacrifice** eats some common drops in exchange for better odds at something unusual.
+- **Echoes** carries the last drop into a kill against a different kind of mob.
+- **Ascendance** builds up danger and rewards while you keep a kill streak alive.
+- **Migration** gives alternate rewards for hunting mobs outside their usual biomes.
+- **Improvisation** rewards you for changing the weapon you use to finish each fight.
 
-The first planned roster establishes six distinct ways to change a hunt:
+These are planned features. The effects and numbers may change once they're in the game and can actually be tested.
 
-| Rune | What it asks of you |
-| --- | --- |
-| **Plenty** | Roll natural loot twice, but face tougher creatures. |
-| **Sacrifice** | Consume common drops to improve exceptional-drop odds. |
-| **Echoes** | Carry the last natural drop into the next different creature. |
-| **Ascendance** | Raise danger and reward through an uninterrupted kill streak. |
-| **Migration** | Hunt creatures outside their native biome for alternate rewards. |
-| **Improvisation** | Change finishing weapons instead of repeating the safest answer. |
+## What's in the mod right now?
 
-Each rune must change what you hunt, how you fight, or what happens to the spoils. A silent “+10% drops” is not enough.
+This repo is in the awkward middle of a rewrite. Extended Golf has been renamed to Loot Runes, but its old skeleton-assisted drop mechanic is still the only implemented gameplay. If you're here for the Rune Tablet and loadouts, wait for a later build.
 
-![Rune hunt placeholder](docs/rune-hunt-placeholder.png)
+The old creature reward tags are still present for now. Datapacks using them need to move from `data/extendedgolf/` to `data/lootrunes/`. There isn't a public datapack format for runes yet, so pack makers shouldn't build against the planned system.
 
-## Current development state
-
-The complete rename from **Extended Golf** to **Loot Runes** is finished in this repository. The gameplay rework comes next.
-
-Current builds still contain the legacy skeleton-assisted loot mechanic inherited from the previous mod. The Rune Tablet, permanent rune unlocks, three-slot loadouts, and the roster above are the target design and are **not implemented yet**.
-
-That distinction will remain explicit until the new loop is playable.
-
-## Datapacks and compatibility
-
-The mod ID and resource namespace are now `lootrunes`. Datapacks written for the old namespace must move their files to `data/lootrunes/`.
-
-The existing creature reward tags remain available during the transition, but the future rune data surface is not stable yet. Pack makers should wait for the gameplay release before building deep integrations against the new system.
-
-Loot Runes is a multiloader project for Fabric and NeoForge and requires [Amber](https://modrinth.com/mod/amber).
+The current source targets Fabric and NeoForge and requires [Amber](https://modrinth.com/mod/amber). The build setup is also due for modernization before the rune rewrite starts.
 
 ## Modpacks
 
-You may include Loot Runes in modpacks. No permission request is required.
+You can include Loot Runes in modpacks. You don't need to ask first.
 
-## Support
+## Help
 
-Report bugs and compatibility problems through the shared [issue tracker](https://github.com/iamkaf/mod-issues/issues), or join the [Discord](https://discord.gg/HV5WgTksaB) to talk about rune ideas and strange loot builds.
+Found a bug or compatibility problem? Use the shared [issue tracker](https://github.com/iamkaf/mod-issues/issues). You can also join the [Discord](https://discord.gg/HV5WgTksaB) if you want to talk through an idea.
 
 ## Credits
 
-- The community members helping shape the new identity.
-- **Aris**, for always being there.
+- Everyone who's helped shape the new idea.
+- **Aris**, for always being there for me.
 
-Loot Runes is licensed under the [MIT License](LICENSE).
+Loot Runes is available under the [MIT License](LICENSE).
