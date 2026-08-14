@@ -1,5 +1,3 @@
-![Loot Runes banner placeholder](docs/banner-placeholder.png)
-
 # Loot Runes
 
 Loot Runes lets you change mob drops with a Rune Tablet. Carry the tablet while hunting, use it to open the rune menu, and keep up to three unlocked runes active. One rune might add another roll from a mob's normal loot table. Another might reward you for changing weapons or moving to a new biome between kills.
@@ -9,8 +7,6 @@ This is the first playable version of the idea. The rune effects and unlock requ
 ## The Rune Tablet
 
 Craft the tablet with amethyst shards, copper ingots, and stone. Use it from either hand to open its menu.
-
-![Rune Tablet UI placeholder](docs/tablet-ui-placeholder.png)
 
 Plenty is available from the start. The rest unlock as the tablet records what you do while carrying it: mobs defeated, kinds of mob hunted, biomes visited, finishing weapons used, and your best kill streak. Progress and your active loadout are saved per player in the world.
 
@@ -29,7 +25,7 @@ Runes combine in the order listed above, so a three-rune loadout can behave diff
 
 Development builds target Minecraft 1.21.11, 26.1, 26.1.1, 26.1.2, and 26.2 on Fabric, Forge, and NeoForge. Each Minecraft version also gets one merged jar that can run on any of the three loaders. Merged jars for 1.21.11 are experimental while the shared tooling for that version settles. [Amber](https://modrinth.com/mod/amber) is required.
 
-The textures are programmer art on purpose. See the [art guide](docs/art-guide.md) if you want to replace them.
+The textures are programmer art on purpose.
 
 ## Modpacks and help
 
