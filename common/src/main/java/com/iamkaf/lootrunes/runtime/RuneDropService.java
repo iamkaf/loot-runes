@@ -67,10 +67,16 @@ public final class RuneDropService {
     }
 
     private static ServerPlayer responsiblePlayer(LootParams params) {
+        //? if >=26.3
+        /*var lastDamagePlayer = params.contextMap().get(LootContextParams.LAST_DAMAGE_PLAYER);*/
+        //? if <26.3
         var lastDamagePlayer = params.contextMap().getOptional(LootContextParams.LAST_DAMAGE_PLAYER);
         if (lastDamagePlayer instanceof ServerPlayer serverPlayer) {
             return serverPlayer;
         }
+        //? if >=26.3
+        /*var attackingEntity = params.contextMap().get(LootContextParams.ATTACKING_ENTITY);*/
+        //? if <26.3
         var attackingEntity = params.contextMap().getOptional(LootContextParams.ATTACKING_ENTITY);
         return attackingEntity instanceof ServerPlayer serverPlayer ? serverPlayer : null;
     }
