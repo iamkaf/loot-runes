@@ -56,11 +56,11 @@ describe("Loot Runes", () => {
       if (plenty?.label.endsWith(" *")) {
         screen = await screen.widgets().activate("Plenty *");
         await ctx.runtime.wait(500);
-        screen = await ctx.client.waitForScreen(runeTabletScreen, { timeout: "15s" });
+        screen = await ctx.client.waitForScreen(runeTabletScreen, { timeoutMs: 15_000 });
       }
       screen = await screen.widgets().activate("Plenty");
       await ctx.runtime.wait(500);
-      screen = await ctx.client.waitForScreen(runeTabletScreen, { timeout: "15s" });
+      screen = await ctx.client.waitForScreen(runeTabletScreen, { timeoutMs: 15_000 });
       expect(screen.widgets().all().some((widget) => widget.label === "Plenty *")).toBe(true);
       await ctx.client.screenshot("loot-runes-tablet-plenty-active", {
         hideOverlay: true,
