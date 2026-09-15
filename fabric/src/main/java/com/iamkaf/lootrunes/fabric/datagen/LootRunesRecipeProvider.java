@@ -7,6 +7,10 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 //? if <26.1
 /*import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;*/
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+//? if >=26.3 {
+/*import net.minecraft.advancements.Advancement;
+import net.minecraft.data.worldgen.BootstrapContext;
+*///?}
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -20,9 +24,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.CompletableFuture;
 
 public final class LootRunesRecipeProvider extends RecipeProvider {
+    //? if >=26.3 {
+    /*private LootRunesRecipeProvider(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+        super(recipes, advancements);
+    }
+    *///?} else {
     private LootRunesRecipeProvider(HolderLookup.Provider lookup, RecipeOutput output) {
         super(lookup, output);
     }
+    //?}
 
     @Override
     public void buildRecipes() {
@@ -46,9 +56,16 @@ public final class LootRunesRecipeProvider extends RecipeProvider {
         }
 
         @Override
+        //? if >=26.3 {
+        /*protected @NotNull RecipeProvider createRecipeProvider(HolderLookup.@NotNull Provider lookup,
+                BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+            return new LootRunesRecipeProvider(recipes, advancements);
+        }
+        *///?} else {
         protected @NotNull RecipeProvider createRecipeProvider(HolderLookup.@NotNull Provider lookup, @NotNull RecipeOutput output) {
             return new LootRunesRecipeProvider(lookup, output);
         }
+        //?}
 
         @Override
         public @NotNull String getName() {
