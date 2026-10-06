@@ -38,4 +38,4 @@ Found a bug or a bad interaction with another mod? Use the shared [issue tracker
 - Everyone who's helped shape the idea.
 - **Aris**, for always being there for me.
 
-Loot Runes is available under the [MIT License](LICENSE).
+Loot Runes is available under the [PolyForm Shield License 1.0.0](LICENSE).
